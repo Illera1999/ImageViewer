@@ -1,42 +1,61 @@
 package imageviewer.apps.mock;
 
+import imageviewer.contro.Command;
+import imageviewer.contro.ExitImageCommand;
+import imageviewer.contro.NextImageCommand;
+import imageviewer.contro.PrevImageCommand;
 import imageviewer.model.Image;
 import imageviewer.view.ImageDisplay;
 import imageviewer.view.ImageLoader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import java.util.Scanner;
 
 public class Main {
 
+    private final Scanner scanner = new Scanner(System.in);
+    private final Map<String,Command> commands = new HashMap<>();
     
     public static void main(String[] args) {
+        new Main().execute();
+
+    }
+
+    public Main() {
         List <Image> images = new MockImageLoader ().load();
         ImageDisplay imageDisplay = new MockImageDisplay();
-        int index = 0;
-        Scanner scanner = new Scanner(System.in);
-        while(true){
-            imageDisplay.display(images.get(index));
-            String key = scanner.next().toUpperCase();
-            if(key.equals("N"))index = bound(index+1,images.size());//Next
-            if(key.equals("P"))index = bound(index-1,images.size());//Previus
-            if(key.equals("O"))break;//Out
-            
-        }
-
+        imageDisplay.display(images.get(0));
+        
+        commands.put("N",new NextImageCommand(images,imageDisplay));
+        commands.put("P",new PrevImageCommand(images,imageDisplay));
+        commands.put("O",new ExitImageCommand());
+    }
+    
+    private void execute() {
+        while(true)commands.get(key()).execute();
+    }
+    
+    private String key() {
+        return scanner.next().toUpperCase();
     }
 
-    private static int bound(int index, int size) {
-        if (index >= size) return 0;
-        if (index < 0) return size-1;
-        return index;
-    }
     
     public static class MockImageDisplay implements ImageDisplay{
 
+        private Image image;
+        
         @Override
         public void display(Image image) {
+            this.image = image;
             System.out.println(image.getName());
+        }
+
+        @Override
+        public Image currentIndex() {
+            return image;
         }
         
     }    
