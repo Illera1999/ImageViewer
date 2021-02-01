@@ -2,6 +2,7 @@ package imageviewer.apps.swing;
 
 import imageviewer.mode.Image;
 import imageviewer.view.ImageDisplay;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -19,6 +20,11 @@ public class ImagePanel extends JPanel implements ImageDisplay{
     
     @Override
     public void paint(Graphics g){
+        g.setColor(Color.white);
+        g.fillRect(0, 0, getWidth(), getHeight());
+        
+        
+        if(bitmap == null)return;
         Scale scale = new Scale(bitmap.getWidth(), bitmap.getHeight(), getWidth(), getHeight());
         g.drawImage(bitmap, scale.x(), scale.y(),scale.width(),scale.height(), null);
     }
@@ -39,7 +45,7 @@ public class ImagePanel extends JPanel implements ImageDisplay{
         try {
             bitmap = ImageIO.read(new File(image.getName()));
         } catch (IOException ex) {
-
+            bitmap = null;
         }
     }
     

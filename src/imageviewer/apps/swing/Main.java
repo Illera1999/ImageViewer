@@ -36,7 +36,7 @@ public class Main extends JFrame{
         this.add(toolbar(),BorderLayout.SOUTH);
         
         List<Image> images = new FileImageLoader(new File("Imagenes")).load();
-        this.imageDisplay.display(images.get(1));
+        this.imageDisplay.display(images.get(0));
         this.commands.put("prev", new PrevImageCommand(images,imageDisplay));
         this.commands.put("next", new NextImageCommand(images,imageDisplay));
     }
