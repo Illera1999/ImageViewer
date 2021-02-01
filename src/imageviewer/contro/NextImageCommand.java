@@ -1,6 +1,6 @@
 package imageviewer.contro;
 
-import imageviewer.model.Image;
+import imageviewer.mode.Image;
 import imageviewer.view.ImageDisplay;
 import java.util.List;
 
