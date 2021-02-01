@@ -5,6 +5,7 @@ import imageviewer.view.ImageDisplay;
 import imageviewer.view.ImageLoader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
@@ -12,10 +13,23 @@ public class Main {
     public static void main(String[] args) {
         List <Image> images = new MockImageLoader ().load();
         ImageDisplay imageDisplay = new MockImageDisplay();
-        for (Image image : images) {
-            imageDisplay.display(image);
+        int index = 0;
+        Scanner scanner = new Scanner(System.in);
+        while(true){
+            imageDisplay.display(images.get(index));
+            String key = scanner.next().toUpperCase();
+            if(key.equals("N"))index = bound(index+1,images.size());//Next
+            if(key.equals("P"))index = bound(index-1,images.size());//Previus
+            if(key.equals("O"))break;//Out
+            
         }
 
+    }
+
+    private static int bound(int index, int size) {
+        if (index >= size) return 0;
+        if (index < 0) return size-1;
+        return index;
     }
     
     public static class MockImageDisplay implements ImageDisplay{
