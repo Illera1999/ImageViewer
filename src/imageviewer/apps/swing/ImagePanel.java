@@ -1,5 +1,7 @@
 package imageviewer.apps.swing;
 
+import imageviewer.mode.Image;
+import imageviewer.view.ImageDisplay;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -9,21 +11,36 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class ImagePanel extends JPanel{
+public class ImagePanel extends JPanel implements ImageDisplay{
 
     private BufferedImage bitmap;
-    public ImagePanel(){
-        try {
-            bitmap = ImageIO.read(new File("Imagenes/índice.jpg"));
-        } catch (IOException ex) {
+    private Image image;
 
-        }
-    }
     
     @Override
     public void paint(Graphics g){
         Scale scale = new Scale(bitmap.getWidth(), bitmap.getHeight(), getWidth(), getHeight());
         g.drawImage(bitmap, scale.x(), scale.y(),scale.width(),scale.height(), null);
+    }
+
+    @Override
+    public void display(Image image) {
+        this.image = image;
+        loadBitmap();
+        repaint();
+    }
+
+    @Override
+    public Image currentIndex() {
+        return image;
+    }
+
+    private void loadBitmap() {
+        try {
+            bitmap = ImageIO.read(new File(image.getName()));
+        } catch (IOException ex) {
+
+        }
     }
     
     
